@@ -1,0 +1,16 @@
+{
+  "name": "flight-travel",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail \"yarn start:web\" \"yarn start:server\"",
+    "start:web": "yarn workspace client dev",
+    "start:server": "yarn workspace server dev"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/**/*"
+    ]
+  },
+  "dependencies": {}
+}
