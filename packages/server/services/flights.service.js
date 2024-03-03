@@ -54,7 +54,7 @@ export class FlightService {
   }
 
   async flightConfirmation(req, res) {
-    const flightOffers = req.body.flightOffers ?? {};
+    const flightOffers = req.body.flightOffers ?? [];
 
     try {
       const response =
@@ -82,6 +82,70 @@ export class FlightService {
         res,
         500,
         "Internal Server Error"
+      );
+    }
+  }
+  async flightBooking(req, res) {
+    try {
+      const flight = req.body.flightOffers;
+      const name = req.body.name;
+
+      const response = await FlightService.amadeus.booking.flightOrders.post(
+        JSON.stringify({
+          data: {
+            type: "flight-order",
+            flightOffers: [flight],
+            travelers: [
+              {
+                id: "1",
+                dateOfBirth: "1982-01-16",
+                name: {
+                  firstName: name.first,
+                  lastName: name.last,
+                },
+                gender: "MALE",
+                contact: {
+                  emailAddress: "jorge.gonzales833@telefonica.es",
+                  phones: [
+                    {
+                      deviceType: "MOBILE",
+                      countryCallingCode: "34",
+                      number: "480080076",
+                    },
+                  ],
+                },
+                documents: [
+                  {
+                    documentType: "PASSPORT",
+                    birthPlace: "Madrid",
+                    issuanceLocation: "Madrid",
+                    issuanceDate: "2015-04-14",
+                    number: "00000000",
+                    expiryDate: "2025-04-14",
+                    issuanceCountry: "ES",
+                    validityCountry: "ES",
+                    nationality: "ES",
+                    holder: true,
+                  },
+                ],
+              },
+            ],
+          },
+        })
+      );
+
+      return responseMessageInstance.getSuccess(
+        res,
+        200,
+        "Flight booked successfully!",
+        { result: response.result }
+      );
+    } catch (error) {
+      console.error("Error occurred while booking flight:", error.description);
+      return responseMessageInstance.getError(
+        res,
+        500,
+        "THIS IS THE END OF BOOKING"
       );
     }
   }
