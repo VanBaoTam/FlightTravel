@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (_, res) => {
   res.send("Hello FlightTravel Server!");
 });
+
 routes(app);
 // -----------------------------------------------
 app.listen(port, () => {
