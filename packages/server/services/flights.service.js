@@ -14,10 +14,6 @@ export class FlightService {
     return this.instance;
   }
 
-  async syncContent(_, res) {
-    return responseMessageInstance.getSuccess(res, 200, "SYNCED", {});
-  }
-
   async getFlightOffers(req, res) {
     const {
       originLocationCode,
@@ -37,10 +33,18 @@ export class FlightService {
         departureDate,
         adults,
       });
-      console.log(data);
-      return data;
+      return responseMessageInstance.getSuccess(
+        res,
+        200,
+        "Load datasuccessfully!",
+        {
+          data,
+        }
+      );
     } catch (error) {
-      throw error;
+      console.error("Error occurred during flight search:", error);
+      // Handle the error here, e.g., send an error response
+      res.status(500).json({ error: "An error occurred during flight search" });
     }
   }
 }
