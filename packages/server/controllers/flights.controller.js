@@ -1,5 +1,4 @@
-import { Request, Response } from "express";
-import { flightServiceInstance } from "../services";
+import { flightServiceInstance } from "../services/index.js";
 
 //------------------------------------------------
 export class FlightController {
@@ -17,7 +16,10 @@ export class FlightController {
   async syncContent(req, res) {
     return await flightServiceInstance.syncContent(req, res);
   }
+  async getFlightOffers(req, res) {
+    return await flightServiceInstance.getFlightOffers(req, res);
+  }
 }
 
 //------------------------------------------------
-export const calendarsInstance = FlightController.getInstance();
+export const flightInstance = FlightController.getInstance();
