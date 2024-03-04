@@ -8,6 +8,7 @@ import NotFound from "./pages/not-found";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Toast from "./components/toast";
+import Confirm from "./pages/confirmation";
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +21,7 @@ function App() {
             <Route path="/checkout/:id" element={<Checkout />} />
             <Route path="/list-flights" element={<List />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/confirmation" element={<Confirm />} />
           </Routes>
         </MainLayout>
       </LocalizationProvider>
