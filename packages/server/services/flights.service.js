@@ -28,7 +28,6 @@ export class FlightService {
       returnDate = undefined,
       currencyCode,
     } = req.query ?? {};
-    console.log(req.query);
     try {
       const { data } =
         await FlightService.amadeus.shopping.flightOffersSearch.get({
@@ -39,7 +38,7 @@ export class FlightService {
           returnDate,
           children: kids,
           currencyCode,
-          max: 10,
+          max: 100,
         });
       return responseMessageInstance.getSuccess(
         res,

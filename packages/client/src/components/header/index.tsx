@@ -22,7 +22,6 @@ export default function Header() {
           </IconButton>
           <Typography variant="h5" color="inherit" component="div">
             <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-              {" "}
               Flight Travel
             </Link>
           </Typography>

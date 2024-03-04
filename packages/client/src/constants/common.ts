@@ -99,15 +99,135 @@ export const VN_AIRPORT: TAirPort[] = [
     city: "Hạ Long",
   },
 ];
-export const flightCols: GridColDef[] = [
+export const flightOnceCols: GridColDef[] = [
   {
-    field: "name",
-    headerName: "Task name",
+    field: "id",
+    headerName: "Id",
+    width: 50,
+  },
+  {
+    field: "carrier",
+    headerName: "Hãng",
+    valueFormatter: ({ value }: { value: string }) => {
+      switch (value) {
+        case "VJ":
+          return "Vietjet";
+        case "QH":
+          return "Bamboo Airways";
+        case "VN":
+          return "Vietnam Airlines";
+        case "VN":
+          return "Pacific Airlines";
+      }
+    },
     width: 200,
   },
   {
-    field: "description",
-    headerName: "Description",
-    width: 430,
+    field: "cabin",
+    headerName: "Hạng",
+    width: 150,
+  },
+  {
+    field: "class",
+    headerName: "Phân lớp",
+    width: 150,
+  },
+  {
+    field: "departureTime",
+    headerName: "Giờ bay",
+    width: 220,
+  },
+  {
+    field: "arrivalTime",
+    headerName: "Giờ đáp",
+    width: 220,
+  },
+  {
+    field: "price",
+    headerName: "Giá thành",
+    valueFormatter: ({ value }: { value: string }) => {
+      if (value) {
+        const numberValue = parseFloat(value);
+        const formattedValue = numberValue.toLocaleString("en-US", {
+          style: "currency",
+          currency: "VND",
+        });
+        return formattedValue;
+      } else {
+        return "";
+      }
+    },
+    width: 220,
+  },
+];
+export const flightBothCols: GridColDef[] = [
+  {
+    field: "id",
+    headerName: "Id",
+    width: 50,
+  },
+  {
+    field: "carrier",
+    headerName: "Hãng",
+    valueFormatter: ({ value }: { value: string }) => {
+      switch (value) {
+        case "VJ":
+          return "Vietjet";
+        case "QH":
+          return "Bamboo Airways";
+        case "VN":
+          return "Vietnam Airlines";
+        case "BL":
+          return "Pacific Airlines";
+      }
+    },
+    width: 200,
+  },
+  {
+    field: "cabin",
+    headerName: "Hạng",
+    width: 150,
+  },
+  {
+    field: "class",
+    headerName: "Phân lớp",
+    width: 150,
+  },
+  {
+    field: "departureTime",
+    headerName: "Giờ bay",
+    width: 200,
+  },
+  {
+    field: "arrivalTime",
+    headerName: "Giờ đáp",
+    width: 200,
+  },
+  {
+    field: "departureReturnTime",
+    headerName: "Giờ bay khứ hồi",
+    width: 200,
+  },
+  {
+    field: "arrivalReturnTime",
+    headerName: "Giờ đáp  khứ hồi",
+    width: 200,
+  },
+  {
+    field: "price",
+    headerName: "Giá thành",
+    valueFormatter: ({ value }: { value: string }) => {
+      if (value) {
+        const numberValue = parseFloat(value);
+        const formattedValue = numberValue.toLocaleString("en-US", {
+          style: "currency",
+          currency: "VND",
+        });
+        return formattedValue;
+      } else {
+        return "";
+      }
+    },
+    width: 200,
   },
 ];

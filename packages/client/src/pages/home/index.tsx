@@ -18,6 +18,7 @@ import dayjs from "dayjs";
 import { TAirPort } from "../../types";
 import { displayToast } from "../../utils/toast";
 import { useDataProvider } from "../../services";
+import { useNavigate } from "react-router-dom";
 
 enum EFlightType {
   once = "once",
@@ -34,12 +35,12 @@ const Home: React.FC = () => {
   const [StartAirport, setStartAirPort] = useState<TAirPort>(VN_AIRPORT[0]);
   const [EndAirport, setEndAirPort] = useState<TAirPort>(VN_AIRPORT[1]);
   const [startedDate, setStartedDate] = useState<any>(dayjs());
-  const [endDate, setEndDate] = useState<any>(dayjs());
+  const [endDate, setEndDate] = useState<any>(undefined);
   const [members, setMembers] = useState<number>(0);
   const [kids, setKids] = useState<number>(0);
   const [flightType, setFlightType] = useState<EFlightType>(EFlightType.once);
   const provider = useDataProvider();
-
+  const navigation = useNavigate();
   const SearchFlights = async (data: any) => {
     try {
       const params = {
@@ -53,13 +54,20 @@ const Home: React.FC = () => {
         kids,
         currencyCode: "VND",
       };
-      console.log("PARAMS", params);
+
       const resp = await provider.get({
         path: "flights/flight-search",
         params,
       });
-      if (resp.status === 200) console.log(resp);
+      if (resp.status === 200) {
+        console.log(resp.data.data);
+        const jsonString = JSON.stringify(resp.data.data);
+        if (sessionStorage.getItem("flightData"))
+          sessionStorage.removeItem("flightData");
+        sessionStorage.setItem("flightData", jsonString);
+      }
       displayToast("Đã tìm được thông tin các chuyến bay đi!", "success");
+      navigation("/list-flights");
     } catch (error: any) {
       console.log(error.response.data.error);
       displayToast(error.response.data.error, "error");
