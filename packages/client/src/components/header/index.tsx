@@ -5,6 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -20,7 +21,10 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h5" color="inherit" component="div">
-            Flight Travel
+            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+              {" "}
+              Flight Travel
+            </Link>
           </Typography>
         </Toolbar>
       </AppBar>

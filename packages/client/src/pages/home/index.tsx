@@ -27,54 +27,66 @@ interface FormData {
   FlightType: EFlightType;
   Members: number;
   StartedAirport: string;
+  returnDate?: string;
   EndAirport: string;
 }
-
 const Home: React.FC = () => {
   const [StartAirport, setStartAirPort] = useState<TAirPort>(VN_AIRPORT[0]);
   const [EndAirport, setEndAirPort] = useState<TAirPort>(VN_AIRPORT[1]);
   const [startedDate, setStartedDate] = useState<any>(dayjs());
   const [endDate, setEndDate] = useState<any>(dayjs());
   const [members, setMembers] = useState<number>(0);
+  const [kids, setKids] = useState<number>(0);
   const [flightType, setFlightType] = useState<EFlightType>(EFlightType.once);
   const provider = useDataProvider();
 
-  const SearchFlights = async (data: FormData, date: any) => {
+  const SearchFlights = async (data: any) => {
     try {
+      const params = {
+        originLocationCode: data.StartedAirport,
+        destinationLocationCode: data.EndAirport,
+        departureDate: dayjs(startedDate).format("YYYY-MM-DD"),
+        adults: data.Members,
+        returnDate: data.returnDate
+          ? dayjs(data.returnDate).format("YYYY-MM-DD")
+          : null,
+        kids,
+        currencyCode: "VND",
+      };
+      console.log("PARAMS", params);
       const resp = await provider.get({
         path: "flights/flight-search",
-        params: {
-          originLocationCode: data.StartedAirport,
-          destinationLocationCode: data.EndAirport,
-          departureDate: dayjs(date).format("YYYY-MM-DD"),
-          adults: data.Members,
-        },
+        params,
       });
       if (resp.status === 200) console.log(resp);
-      displayToast("SUCCESS", "success");
+      displayToast("Đã tìm được thông tin các chuyến bay đi!", "success");
     } catch (error: any) {
       console.log(error.response.data.error);
       displayToast(error.response.data.error, "error");
     }
   };
-  const onSubmit = (data: FormData) => {
-    SearchFlights(data, startedDate);
-    if (EFlightType.both === data.FlightType) {
-      const newData: FormData = {
-        StartedAirport: data.EndAirport,
-        EndAirport: data.StartedAirport,
-        Members: data.Members,
-        FlightType: data.FlightType,
-      };
-      SearchFlights(newData, endDate);
-    }
+
+  const onSubmit = async (data: FormData) => {
+    const returnData = {
+      ...data,
+      StartedAirport: data.StartedAirport,
+      EndAirport: data.EndAirport,
+      returnDate: endDate ?? undefined,
+    };
+    SearchFlights(returnData);
   };
 
   const handleChangeMembers = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value as unknown;
     const num = value as number;
-    if (num > 0) setMembers(num);
+    if (num > 0 && num < 10) setMembers(num);
     else setMembers(0);
+  };
+  const handleChangeKids = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = (event.target as HTMLInputElement).value as unknown;
+    const num = value as number;
+    if (num > 0) setKids(num);
+    else setKids(0);
   };
   const handleChangeFlightType = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -96,6 +108,22 @@ const Home: React.FC = () => {
     }
     if (flightType === EFlightType.both && !endDate) {
       displayToast("Hãy chọn ngày khứ hồi!", "error");
+      return;
+    }
+    if (members > 9) {
+      displayToast("Chỉ có thể đặt vé cho tối đa 9 người mỗi phiên!", "error");
+      return;
+    }
+    if (members < 1) {
+      displayToast("Hãy đảm bảo có ít nhất 1 khách đặt vé!", "error");
+      return;
+    }
+    if (kids > 9) {
+      displayToast("Chỉ có thể đặt vé cho tối đa 9 trẻ em mỗi phiên!", "error");
+      return;
+    }
+    if (kids < 0) {
+      displayToast("Số lượng trẻ em đặt vé không hợp lệ!", "error");
       return;
     }
     if (members <= 0) {
@@ -143,11 +171,21 @@ const Home: React.FC = () => {
               />
             </RadioGroup>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <TextField
               type="number"
               label="Số lượng hành khách"
+              value={members}
               onChange={handleChangeMembers}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              type="number"
+              label="Số lượng trẻ em (optional)"
+              value={kids}
+              onChange={handleChangeKids}
               fullWidth
             />
           </Grid>

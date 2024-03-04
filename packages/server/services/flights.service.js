@@ -23,7 +23,10 @@ export class FlightService {
       originLocationCode,
       destinationLocationCode,
       departureDate,
-      adults,
+      adults = 1,
+      kids = 0,
+      returnDate = undefined,
+      currencyCode,
     } = req.query ?? {};
     console.log(req.query);
     try {
@@ -33,11 +36,15 @@ export class FlightService {
           destinationLocationCode,
           departureDate,
           adults,
+          returnDate,
+          children: kids,
+          currencyCode,
+          max: 10,
         });
       return responseMessageInstance.getSuccess(
         res,
         200,
-        "Load datasuccessfully!",
+        "Load data successfully!",
         {
           data,
         }

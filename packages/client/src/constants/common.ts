@@ -1,3 +1,4 @@
+import { GridColDef } from "@mui/x-data-grid";
 import { TAirPort } from "../types";
 export const VN_AIRPORT: TAirPort[] = [
   {
@@ -96,5 +97,17 @@ export const VN_AIRPORT: TAirPort[] = [
     code: "VDO",
     name: "Sân bay quốc tế Vân Đồn",
     city: "Hạ Long",
+  },
+];
+export const flightCols: GridColDef[] = [
+  {
+    field: "name",
+    headerName: "Task name",
+    width: 200,
+  },
+  {
+    field: "description",
+    headerName: "Description",
+    width: 430,
   },
 ];

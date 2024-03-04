@@ -1,5 +1,7 @@
+import FlightTabs from "../../components/tab";
+
 function List() {
-  return <div>List</div>;
+  return <FlightTabs />;
 }
 
 export default List;
