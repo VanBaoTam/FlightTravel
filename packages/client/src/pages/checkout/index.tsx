@@ -52,7 +52,7 @@ const Checkout: React.FC = () => {
   const navigation = useNavigate();
   const handleCloseAdd = useCallback(() => {
     setIsOpenAdd(false);
-    navigation("/confirmation");
+    navigation(`/confirmation`);
   }, []);
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -153,6 +153,15 @@ const Checkout: React.FC = () => {
       displayToast("CCCD phải đúng 12 số!", "info");
       return;
     }
+    if (sessionStorage.getItem("PERSONAL_INFORMATION"))
+      sessionStorage.removeItem("PERSONAL_INFORMATION");
+    const json = JSON.stringify(formData);
+    sessionStorage.setItem("PERSONAL_INFORMATION", json);
+    if (sessionStorage.getItem("BOUGHT_SEATS"))
+      sessionStorage.removeItem("BOUGHT_SEATS");
+    const boughtSeats = JSON.stringify(flightDetail.travelerPricings.length);
+    sessionStorage.setItem("BOUGHT_SEATS", boughtSeats);
+
     setIsOpenAdd(true);
   };
 

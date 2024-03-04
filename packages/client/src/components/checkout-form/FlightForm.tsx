@@ -1,6 +1,5 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
 
 function FLightForm(props: {
   flightDetail: any;
@@ -20,9 +19,6 @@ function FLightForm(props: {
     style: "currency",
     currency: "VND",
   });
-  useEffect(() => {
-    console.log(flightDetail, formData, selectedSeat);
-  }, []);
 
   return (
     <Box sx={{ display: "flex", p: 1 }}>
@@ -95,16 +91,16 @@ function FLightForm(props: {
             )}
           </Typography>
           <Typography component="p" sx={{ pb: 1 }}>
-            tới tại: {flightDetail.itineraries[0].segments[0].arrival.iataCode},
+            Tới tại: {flightDetail.itineraries[0].segments[0].arrival.iataCode},
             Lúc &nbsp;
             {dayjs(flightDetail.itineraries[0].segments[0].arrival.at).format(
               "HH:mm:ss DD/MM/YYYY"
             )}
           </Typography>
-          {flightDetail.itineraries[1].segments[0] ? (
+          {flightDetail.itineraries[1]?.segments[0] ? (
             <Box>
               <Typography component="p" sx={{ pb: 1 }}>
-                Về tại:
+                Về tại: &nbsp;
                 {flightDetail.itineraries[1].segments[0].departure.iataCode},
                 Lúc&nbsp;
                 {dayjs(
@@ -112,7 +108,7 @@ function FLightForm(props: {
                 ).format("HH:mm:ss DD/MM/YYYY")}
               </Typography>
               <Typography component="p" sx={{ pb: 1 }}>
-                Đáp tại:
+                Đáp tại: &nbsp;
                 {flightDetail.itineraries[1].segments[0].arrival.iataCode}, Lúc
                 &nbsp;
                 {dayjs(

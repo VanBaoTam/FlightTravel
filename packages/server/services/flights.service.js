@@ -168,7 +168,10 @@ export class FlightService {
         result,
       });
     } catch (error) {
-      console.error("Error occurred while booking flight:", error.result);
+      console.error(
+        "Error occurred while finding available seats:",
+        error.result
+      );
       return responseMessageInstance.getError(res, 500, error.result);
     }
   }
