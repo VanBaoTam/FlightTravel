@@ -1,53 +1,42 @@
+import { useEffect } from "react";
+
+import { useDataProvider } from "../../services";
 import { Box, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import emailjs from "emailjs-com";
 function Confirm() {
-  function generateRandomString() {
-    let randomString = "";
-    while (randomString.length < 10) {
-      randomString += Math.floor(Math.random() * 10);
-    }
-    return randomString;
-  }
-  const handleSendingConfirmEmail = async () => {
-    const passcode = generateRandomString();
-    const personalInformationJSON = sessionStorage.getItem(
-      "PERSONAL_INFORMATION"
-    );
-    const boughtSeatJSON = sessionStorage.getItem("BOUGHT_SEATS");
-    const formData = JSON.parse(personalInformationJSON || "");
-    const boughtSeats = JSON.parse(boughtSeatJSON || "");
-    const emailParams = {
-      to_email: formData.email,
-      from_name: "Flight Travel",
-      to_name: formData.fullName,
-      message: `We confirmed your payment at Flight Travel for booking ${boughtSeats} seats for a flight on our website. Your passcode for your tickets are: ${passcode}. Please don't share this email to everyone else. Get the number and give it to the check-in table for your tickets.`,
-      subject: "Payment Confirmation!",
-      reply_to: formData.email,
-    };
+  const provider = useDataProvider();
+
+  const OnlinePayment = async () => {
+    const price = sessionStorage.getItem("PRICE");
+    const tickets = sessionStorage.getItem("BOUGHT_SEATS");
+
     try {
-      await emailjs.send(
-        import.meta.env.VITE_EMAIL_SERVICE_KEY,
-        import.meta.env.VITE_EMAIL_TEMPLATE_KEY,
-        emailParams,
-        import.meta.env.VITE_SECRET_KEY
-      );
-    } catch (error) {
-      console.error("Error occurred sending emails:", error);
+      const resp = await provider.post({
+        path: "payment/payment",
+        body: { price, tickets },
+      });
+      if (resp.status === 200) {
+        console.log(resp);
+        window.open(resp.data.result.orderurl, "_self");
+      }
+    } catch (error: any) {
+      console.log("ERROR", error.response);
     }
   };
   useEffect(() => {
-    handleSendingConfirmEmail();
+    OnlinePayment();
   }, []);
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      Vé máy bay của bạn đã được xác nhận, chúc bạn có 1 chuyến đi an toàn và
-      vui vẻ!
+      Bạn đang được chuyển trang đến ZALOPAY để thực hiện thanh toán, xin vui
+      lòng chờ ....
       <Link to="/" style={{ marginTop: "30px" }}>
-        <Button variant="contained">Quay lại trang chủ</Button>
+        <Button variant="contained">
+          {" "}
+          Nếu chờ quá lâu, bạn có thể quay lại trang chủ
+        </Button>
       </Link>
     </Box>
   );

@@ -49,10 +49,8 @@ const Checkout: React.FC = () => {
   const [birthDate, setBirthDate] = useState<any>(dayjs("2000-01-01"));
   const [selectedSeat, setSelectedSeat] = useState<number[]>([]);
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
-  const navigation = useNavigate();
   const handleCloseAdd = useCallback(() => {
     setIsOpenAdd(false);
-    navigation(`/confirmation`);
   }, []);
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

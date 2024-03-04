@@ -1,5 +1,6 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 function FLightForm(props: {
   flightDetail: any;
@@ -14,12 +15,12 @@ function FLightForm(props: {
     },
     0
   );
-
+  const navigation = useNavigate();
   const totalPriceWithCurrency = totalPrice.toLocaleString("en-US", {
     style: "currency",
     currency: "VND",
   });
-
+  sessionStorage.setItem("PRICE", totalPrice);
   return (
     <Box sx={{ display: "flex", p: 1 }}>
       <Box sx={{ width: "50%" }}>
@@ -121,8 +122,13 @@ function FLightForm(props: {
             Tổng Tiền: &nbsp;&nbsp;
             {totalPriceWithCurrency}
           </Typography>
-          <Button variant="contained" onClick={handleCloseAdd}>
-            Xác Nhận
+          <Button
+            variant="contained"
+            onClick={() => {
+              navigation(`/confirmation`);
+            }}
+          >
+            Thanh Toán Online
           </Button>
         </Grid>
       </Box>

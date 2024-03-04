@@ -158,7 +158,6 @@ export class FlightService {
   async flightAvailableSeats(req, res) {
     try {
       const { searchData } = req.body ?? {};
-      console.log(searchData);
       const response =
         await FlightService.amadeus.shopping.availability.flightAvailabilities.post(
           JSON.stringify(searchData)
