@@ -155,5 +155,22 @@ export class FlightService {
       );
     }
   }
+  async flightAvailableSeats(req, res) {
+    try {
+      const { searchData } = req.body ?? {};
+      console.log(searchData);
+      const response =
+        await FlightService.amadeus.shopping.availability.flightAvailabilities.post(
+          JSON.stringify(searchData)
+        );
+      const result = JSON.parse(response.body);
+      return responseMessageInstance.getSuccess(res, 200, "successfully!", {
+        result,
+      });
+    } catch (error) {
+      console.error("Error occurred while booking flight:", error.result);
+      return responseMessageInstance.getError(res, 500, error.result);
+    }
+  }
 }
 export const flightServiceInstance = FlightService.getInstance();

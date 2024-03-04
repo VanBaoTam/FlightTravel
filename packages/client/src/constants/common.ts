@@ -118,6 +118,8 @@ export const flightOnceCols: GridColDef[] = [
           return "Vietnam Airlines";
         case "VN":
           return "Pacific Airlines";
+        default:
+          return value;
       }
     },
     width: 200,
@@ -179,6 +181,8 @@ export const flightBothCols: GridColDef[] = [
           return "Vietnam Airlines";
         case "BL":
           return "Pacific Airlines";
+        default:
+          return value;
       }
     },
     width: 200,

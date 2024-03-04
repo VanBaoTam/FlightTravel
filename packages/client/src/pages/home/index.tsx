@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import { TAirPort } from "../../types";
 import { displayToast } from "../../utils/toast";
 import { useDataProvider } from "../../services";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 
 enum EFlightType {
   once = "once",
@@ -60,7 +60,6 @@ const Home: React.FC = () => {
         params,
       });
       if (resp.status === 200) {
-        console.log(resp.data.data);
         const jsonString = JSON.stringify(resp.data.data);
         if (sessionStorage.getItem("flightData"))
           sessionStorage.removeItem("flightData");
@@ -81,11 +80,7 @@ const Home: React.FC = () => {
       EndAirport: data.EndAirport,
       returnDate: endDate ?? undefined,
     };
-    if (sessionStorage.getItem("DATAFORM")) {
-      sessionStorage.removeItem("DATAFORM ");
-    }
-    const json = JSON.stringify(returnData);
-    sessionStorage.setItem("DATAFORM", json);
+
     SearchFlights(returnData);
   };
 

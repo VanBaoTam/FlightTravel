@@ -25,6 +25,9 @@ export class FlightController {
   async flightBooking(req, res) {
     return await flightServiceInstance.flightBooking(req, res);
   }
+  async flightAvailableSeats(req, res) {
+    return await flightServiceInstance.flightAvailableSeats(req, res);
+  }
 }
 
 //------------------------------------------------
