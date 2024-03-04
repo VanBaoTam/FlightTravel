@@ -81,6 +81,11 @@ const Home: React.FC = () => {
       EndAirport: data.EndAirport,
       returnDate: endDate ?? undefined,
     };
+    if (sessionStorage.getItem("DATAFORM")) {
+      sessionStorage.removeItem("DATAFORM ");
+    }
+    const json = JSON.stringify(returnData);
+    sessionStorage.setItem("DATAFORM", json);
     SearchFlights(returnData);
   };
 
@@ -241,6 +246,7 @@ const Home: React.FC = () => {
           <Grid item xs={6}>
             <DatePicker
               value={startedDate}
+              minDate={dayjs()}
               onChange={(value) => {
                 if (value) setStartedDate(value);
               }}
@@ -292,6 +298,7 @@ const Home: React.FC = () => {
             <Grid item xs={6}>
               <DatePicker
                 value={endDate}
+                minDate={dayjs()}
                 onChange={(value) => {
                   if (value) setEndDate(value);
                 }}

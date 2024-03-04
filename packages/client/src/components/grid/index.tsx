@@ -1,19 +1,21 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { flightBothCols, flightOnceCols } from "../../constants";
 import { useCallback, useEffect, useState } from "react";
-import { Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import { displayToast } from "../../utils/toast";
+import { useNavigate } from "react-router-dom";
 
 function FlightGrid() {
   const [ids, setIds] = useState<number[]>([]);
-  const [flights, setFlights] = useState<JSON[]>();
+  const [flights, setFlights] = useState<JSON[]>([]);
   const [type, setType] = useState<number>(0); //true - both | false - once
   const [flightRows, setFlightRows] = useState<any[]>([]);
+  const navigation = useNavigate();
   const getValues = () => {
     const storedJsonString = sessionStorage.getItem("flightData");
     const storedJsonData = JSON.parse(storedJsonString || "");
     setFlights(storedJsonData);
-    console.log(storedJsonData);
     let data: any[] = [];
     if (storedJsonData[0].itineraries[1]) {
       setType(2);
@@ -41,7 +43,6 @@ function FlightGrid() {
       });
     } else {
       setType(1);
-      console.log("HERE");
       storedJsonData.map((ele: any) => {
         const value = {
           id: ele.id,
@@ -60,11 +61,27 @@ function FlightGrid() {
       });
     }
     setFlightRows(data);
-    console.log(data);
   };
   useEffect(() => {
     getValues();
   }, []);
+  const handleCheckout = () => {
+    if (ids.length < 1) {
+      displayToast("Xin hãy chọn 1 chuyến bay để tiếp tục!", "warning");
+      return;
+    }
+    if (ids.length > 1) {
+      displayToast("Xin hãy chọn duy nhất 1 chuyến bay!", "warning");
+      return;
+    }
+
+    if (sessionStorage.getItem("SelectedFlight")) {
+      sessionStorage.removeItem("SelectedFlight");
+    }
+    const jsonString = JSON.stringify(flights[ids[0] - 1]);
+    sessionStorage.setItem("SelectedFlight", jsonString);
+    navigation(`/checkout/${ids[0]}`);
+  };
   const handleSelectionModel = useCallback((ids: any[]) => {
     if (!ids.length) {
       return;
@@ -72,8 +89,24 @@ function FlightGrid() {
     setIds(ids);
   }, []);
   return flights ? (
-    <div>
-      <h1>Danh sách các chuyến bay</h1>
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          px: 1,
+        }}
+      >
+        <h3 style={{ fontSize: "20px" }}>Danh sách các chuyến bay</h3>{" "}
+        <Button
+          variant="contained"
+          sx={{ mr: 10, height: "50px", fontWeight: "Bold" }}
+          onClick={handleCheckout}
+        >
+          Thanh toán
+        </Button>
+      </Box>
       {type === 2 ? (
         <DataGrid
           rows={flightRows}
@@ -105,7 +138,7 @@ function FlightGrid() {
           onRowSelectionModelChange={handleSelectionModel}
         />
       )}
-    </div>
+    </Box>
   ) : (
     <Typography component={"h5"}>LOADING....</Typography>
   );
