@@ -143,12 +143,25 @@ const Checkout: React.FC = () => {
   }, []);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (formData.phoneNumber.length !== 10) {
-      displayToast("SDT phải đảm bảo đúng 10 chữ số", "info");
+    if (formData.fullName) {
+      displayToast("Xin hãy nhập tên!", "info");
       return;
     }
     if (formData.idCard.length !== 12) {
       displayToast("CCCD phải đúng 12 số!", "info");
+      return;
+    }
+    if (formData.phoneNumber.length !== 10) {
+      displayToast("SDT phải đảm bảo đúng 10 chữ số", "info");
+      return;
+    }
+
+    if (formData.email) {
+      displayToast("Xin hãy nhập E-mail!", "info");
+      return;
+    }
+    if (boughtSeats !== selectedSeat.length) {
+      displayToast("Xin hãy nhập E-mail!", "info");
       return;
     }
     if (sessionStorage.getItem("PERSONAL_INFORMATION"))
@@ -157,8 +170,8 @@ const Checkout: React.FC = () => {
     sessionStorage.setItem("PERSONAL_INFORMATION", json);
     if (sessionStorage.getItem("BOUGHT_SEATS"))
       sessionStorage.removeItem("BOUGHT_SEATS");
-    const boughtSeats = JSON.stringify(flightDetail.travelerPricings.length);
-    sessionStorage.setItem("BOUGHT_SEATS", boughtSeats);
+    const BOUGHT_SEATS = JSON.stringify(flightDetail.travelerPricings.length);
+    sessionStorage.setItem("BOUGHT_SEATS", BOUGHT_SEATS);
 
     setIsOpenAdd(true);
   };

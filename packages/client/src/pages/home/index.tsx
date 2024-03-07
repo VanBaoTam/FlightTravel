@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import { TAirPort } from "../../types";
 import { displayToast } from "../../utils/toast";
 import { useDataProvider } from "../../services";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 enum EFlightType {
   once = "once",
@@ -163,6 +163,7 @@ const Home: React.FC = () => {
             <RadioGroup
               onChange={handleChangeFlightType}
               name="FlightType"
+              defaultValue={EFlightType.once}
               sx={{ display: "flex", flexDirection: "row" }}
             >
               <FormControlLabel

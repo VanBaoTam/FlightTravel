@@ -1,4 +1,3 @@
-import { Headphones } from "@mui/icons-material";
 import { Box, Grid } from "@mui/material";
 import { ReactNode } from "react";
 import Header from "../header";
