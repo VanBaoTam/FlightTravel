@@ -219,7 +219,7 @@ export const flightBothCols: GridColDef[] = [
   },
   {
     field: "price",
-    headerName: "Giá thành",
+    headerName: "Tổng tiền",
     valueFormatter: ({ value }: { value: string }) => {
       if (value) {
         const numberValue = parseFloat(value);
