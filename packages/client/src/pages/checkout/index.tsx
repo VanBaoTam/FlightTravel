@@ -143,7 +143,8 @@ const Checkout: React.FC = () => {
   }, []);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (formData.fullName) {
+    console.log(formData);
+    if (!formData.fullName.length) {
       displayToast("Xin hãy nhập tên!", "info");
       return;
     }
@@ -156,12 +157,12 @@ const Checkout: React.FC = () => {
       return;
     }
 
-    if (formData.email) {
+    if (!formData.email.length) {
       displayToast("Xin hãy nhập E-mail!", "info");
       return;
     }
     if (boughtSeats !== selectedSeat.length) {
-      displayToast("Xin hãy nhập E-mail!", "info");
+      displayToast("Xin hãy chọn đủ số ghế!", "info");
       return;
     }
     if (sessionStorage.getItem("PERSONAL_INFORMATION"))
