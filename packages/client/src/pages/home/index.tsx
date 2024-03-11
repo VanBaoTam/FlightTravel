@@ -66,6 +66,7 @@ const Home: React.FC = () => {
         sessionStorage.setItem("flightData", jsonString);
       }
       displayToast("Đã tìm được thông tin các chuyến bay đi!", "success");
+      console.log(resp);
       navigation("/list-flights");
     } catch (error: any) {
       console.log(error.response.data.error);
